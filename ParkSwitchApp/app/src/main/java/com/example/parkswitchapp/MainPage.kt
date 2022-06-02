@@ -19,6 +19,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.parkswitchapp.utils.APIUtil
+import com.example.parkswitchapp.utils.UserData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.json.JSONObject
@@ -28,32 +29,41 @@ import kotlin.concurrent.thread
 class MainPage : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
+    private lateinit var userData: UserData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main_page)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        // TODO: get user_data from extra
+
+        // get user_data from extra
+
+        val id = getIntent().getExtras()?.getInt("user_data")
+//        // TODO: use user_id to get data
+//        APIUtil.getRequest("user?userId=1") {
+//            runOnUiThread {
+//                val status = it.get("status") as String
+//                if (status != "OK") {
+//                    Toast.makeText(this, "Error! $status", Toast.LENGTH_LONG).show()
+//                }
+//                else {
+//                    val user = it.get("user") as JSONObject
+//                    userData = UserData.init_user_data(user)
+//                    Toast.makeText(this, "Welcome ${userData.username}! (userId: ${userData.id})", Toast.LENGTH_LONG).show()
+//                }
+//
+//            }
+//        }
+        //TODO: remove once implemented
+        userData = UserData(1, "Matan",  100, null, null)
+
         // set listeners
         findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
-        findViewById<Button>(R.id.ButtonParked).setOnClickListener {
-            // TODO:    Get current location and save to server
-            val addr : Address? = getLocation()
-            if (addr != null) {
-                APIUtil.postRequest("postParking", JSONObject()
-                    .put("id", "user_id")//TODO - change to user_id
-                    .put("location", "location_parser")) { // TODO: add location parser
-                    runOnUiThread {
-                        it.get("staus")
-                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
+        findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
 //            val intent = Intent(this, MapsActivity::class.java)
 //            startActivity(intent)
@@ -81,6 +91,25 @@ class MainPage : AppCompatActivity() {
             true
         }
         popup.show()
+    }
+
+    private fun parkedClicked(view : View) {
+        // Get current location and save to server
+        val addr : Address? = getLocation()
+        if (addr != null) {
+            APIUtil.postRequest("postParking", JSONObject()
+                .put("id", userData.id)
+                .put("location", UserData.parseLocation(addr.longitude, addr.latitude))) {
+                runOnUiThread {
+                    it.get("status")
+                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private fun leaveClicked(view : View) {
+
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -153,4 +182,5 @@ class MainPage : AppCompatActivity() {
         }
         return ret_addr
     }
+
 }
