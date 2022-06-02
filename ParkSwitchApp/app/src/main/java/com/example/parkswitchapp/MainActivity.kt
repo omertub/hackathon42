@@ -20,8 +20,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
-        val loginButton: Button = findViewById(R.id.login_button_id)
-        loginButton.setOnClickListener { loginClicked(loginButton) }
+        findViewById<Button>(R.id.ButtonLogin).setOnClickListener { view -> loginClicked(view) }
+        findViewById<Button>(R.id.ButtonSignup).setOnClickListener { view -> signupClicked(view) }
+        findViewById<Button>(R.id.ButtonSkip).setOnClickListener { view -> startActivity(Intent(this, MainPage::class.java)) }
+
     }
 
     private fun loginClicked(view: View) {
@@ -56,4 +58,7 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 
     }
+
+    private fun signupClicked(view: View) { }
 }
+
