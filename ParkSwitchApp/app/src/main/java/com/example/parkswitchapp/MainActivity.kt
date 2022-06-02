@@ -29,11 +29,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginClicked(view: View) {
-        val username: EditText = findViewById(R.id.username_id)
-        val password: EditText = findViewById(R.id.password_id)
-        val username_string = username.text.toString()
-        val password_string = password.text.toString()
-        val user = User(username_string, password_string)
+        val username = findViewById<EditText>(R.id.username_id).text.toString()
+        val password = findViewById<EditText>(R.id.password_id).text.toString()
+
+        APIUtil.postRequest(
+            "login", JSONObject()
+                .put("username", username)
+                .put("password", password) )
+        {
+            runOnUiThread {
+                it.get("status")
+                val status = it.get("status") as String
+                if (status != "OK") {
+                    Toast.makeText(this.applicationContext, "Error! $status", Toast.LENGTH_LONG).show()
+                } else {
+                    val user = it.get("user") as JSONObject
+                    var id = user.get("id") as Int
+                    Toast.makeText(this.applicationContext, "id: $id", Toast.LENGTH_LONG).show()
+
+                    // Hide the keyboard.
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                    val mainPageActivity = Intent(this, MainPage::class.java)
+                    mainPageActivity.putExtra("user_data", id)
+                    startActivity(mainPageActivity)
+                }
+            }
+        }
 
 
         //send user_name and password to backend and get back name and user_id

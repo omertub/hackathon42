@@ -1,5 +1,8 @@
 package com.example.parkswitchapp.utils
 
+import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import io.socket.client.IO
 import io.socket.emitter.Emitter
 import okhttp3.MediaType
@@ -46,5 +49,6 @@ class APIUtil {
                 callback(it[0] as JSONObject)
             }
         }
+
     }
 }
