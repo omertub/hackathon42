@@ -30,14 +30,21 @@ class MainActivity : AppCompatActivity() {
         val username_string = username.text.toString()
         val password_string = password.text.toString()
         val user = User(username_string, password_string)
-        if (username_string =="admin" && password_string == "1234") {
+
+        //Intent i = new Intent(CurrentActivity.this, NewActivity.class);
+        //i.putExtra("key",value);
+        //startActivity(i);
+
+        if (username_string =="" && password_string == "") {
             Toast.makeText(this,"LOGIN SUCCESFULL", Toast.LENGTH_SHORT).show()
             //startActivity(Intent(this, MainPage::class.java))
-            startActivity(Intent(this, MapsActivity::class.java))
+            val main_page_activity = Intent(this, MapsActivity::class.java)
+            main_page_activity.putExtra("user_id","1111")
+            main_page_activity.putExtra("name","Omer")
+            startActivity(Intent(this, MainActivity::class.java))
         }
         else {
             Toast.makeText(this,"LOGIN FAILED", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MapsActivity::class.java))
         }
         // Hide the keyboard.
         val inputMethodManager =
