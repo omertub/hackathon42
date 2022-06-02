@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         //i.putExtra("key",value);
         //startActivity(i);
 
+        //send user_name and password to backend and get back name and user_id
+
         if (username_string =="" && password_string == "") {
             Toast.makeText(this,"LOGIN SUCCESFULL", Toast.LENGTH_SHORT).show()
             //startActivity(Intent(this, MainPage::class.java))

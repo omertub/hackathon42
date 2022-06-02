@@ -1,10 +1,13 @@
 package com.example.parkswitchapp
 
+import android.app.Dialog
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
@@ -90,10 +93,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
         parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
 
+        var hashMap : HashMap<LatLng, usersWithLocations>
+                = HashMap<LatLng, usersWithLocations> ()
 
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
         // Add a marker on the map coordinates.
         for (parked_user in parked_users) {
+            hashMap.put(parked_user.location, parked_user) //should be string and not LatLng?
             val color : Float
             if (parked_user.time<5.0)
                 color = BitmapDescriptorFactory.HUE_RED
@@ -118,21 +124,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setTrafficEnabled(true)
 
         mMap.setOnMarkerClickListener { marker ->
+            val user = hashMap.get(marker.position)
+
             //TODO: open here a window from left/right/down with user info and a button to order
             // this parking spot
+            val dialog: Dialog = Dialog(this)
+            dialog.setContentView(R.layout.layout_custom_dialog)
+            dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+            val btnClose: ImageView = dialog.findViewById(R.id.btn_close);
+
+            btnClose.setOnClickListener(View.OnClickListener() {
+                view-> dialog.dismiss();
+            })
+
+            dialog.show();
             //mMap.getUiSettings().setMapToolbarEnabled(true)
-            if (!marker.isInfoWindowShown) {
-                marker.showInfoWindow()
-
-            }
-
-            Toast.makeText(this,marker.position.toString(), Toast.LENGTH_SHORT).show()
-//            if (marker.isInfoWindowShown) {
-//                marker.hideInfoWindow()
-//            } else {
+//            if (!marker.isInfoWindowShown) {
 //                marker.showInfoWindow()
+//
 //            }
-            //true
+//
+//            Toast.makeText(this,marker.position.toString(), Toast.LENGTH_SHORT).show()
+////            if (marker.isInfoWindowShown) {
+////                marker.hideInfoWindow()
+////            } else {
+////                marker.showInfoWindow()
+////            }
+//            //true
             false //ARIK: forcing google to also activate default listener which opens directions
         }
 
