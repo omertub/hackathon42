@@ -39,20 +39,30 @@
 
     <Button
         android:id="@+id/ButtonFindParking"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Find Parking" />
+        android:layout_margin="20dp"
+        android:insetTop="120dp"
+        android:padding="15dp"
+        android:text="Find Parking"
+        android:textSize="20sp"
+        app:iconPadding="8dp" />
+
     <Button
         android:id="@+id/ButtonParked"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Parked" />
+        android:layout_margin="20dp"
+        android:padding="15dp"
+        android:text="Parked"
+        android:textSize="20sp" />
+
     <Button
         android:id="@+id/ButtonLeaveParking"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Leave Parking" />
+        android:layout_margin="20dp"
+        android:padding="15dp"
+        android:text="Leave Parking"
+        android:textSize="20sp" />
 </LinearLayout>
