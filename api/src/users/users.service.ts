@@ -11,7 +11,7 @@ export class UserService {
     @Inject('USERS_REPOSITORY') private usersRepository: Repository<User>
   ) {}
 
-  async findOne(userId: number) {
+  async findUser(userId: number) {
     // we need to await because find is async operation(like Future in Java)
     const user = await this.usersRepository.findOne({
       where: {
@@ -65,31 +65,33 @@ export class UserService {
   }
 
   async postParking(postParking: any) {
-    const user = await this.usersRepository.save(postParking);
-    return user;
+    await this.usersRepository.save(postParking);
+    const updatedUser = await this.findUser(postParking.id);
+
+    return updatedUser;
   }
 
   async commitParking(commitParking: any) {
-    let parkerUser = await this.usersRepository.findOne({
-      where: {
-        id: commitParking.id
-      }
-    })
+    const parkerUser = await this.findUser(commitParking.id);
 
-    const ownerUser = await this.usersRepository.save({
+    await this.usersRepository.save({
       id: commitParking.ownerId,
       parkerId: parkerUser.id
     });
 
+    const updatedOwnerUser = await this.findUser(commitParking.ownerId);
+
     // subtract tokens from the parker
-    parkerUser = await this.usersRepository.save({
+    await this.usersRepository.save({
       id: parkerUser.id,
       tokens: parkerUser.tokens - TOKENS_ADDITION
     })
 
+    const updatedParkerUser = await this.findUser(parkerUser.id);
+
     return {
-      parkerUser: parkerUser,
-      ownerUser: ownerUser
+      parkerUser: updatedParkerUser,
+      ownerUser: updatedOwnerUser
     };
   }
 
@@ -101,12 +103,14 @@ export class UserService {
       }
     });
 
-    const updatedUser = await this.usersRepository.save({
+    await this.usersRepository.save({
       id: owenrUser.id,
       tokens: owenrUser.tokens + TOKENS_ADDITION,
       location: null,
       parkerId: null
     });
+
+    const updatedUser = await this.findUser(owenrUser.id);
 
     return updatedUser;
   }

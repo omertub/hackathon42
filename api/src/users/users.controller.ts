@@ -17,7 +17,7 @@ export class UserController {
     // you can access the GET param userId using @Query
     @Get('user')
     async getUser(@Query('id') id: number) {
-        const user = await this.userService.findOne(id);
+        const user = await this.userService.findUser(id);
 
         // if the user is not found
         if (!user) {
