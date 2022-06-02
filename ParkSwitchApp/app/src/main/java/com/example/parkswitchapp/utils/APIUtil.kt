@@ -1,4 +1,4 @@
-package com.example.test.utils
+package com.example.parkswitchapp.utils
 
 import io.socket.client.IO
 import io.socket.emitter.Emitter
@@ -42,6 +42,7 @@ class APIUtil {
 
         fun on(eventName: String, callback: (payload: JSONObject) -> Any) {
             webSocket.on(eventName) {
+                webSocket.off(eventName) // will be triggered one-time
                 callback(it[0] as JSONObject)
             }
         }

@@ -12,17 +12,18 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
 import android.view.MenuInflater
 import android.widget.PopupMenu
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
+import com.example.parkswitchapp.utils.APIUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import org.json.JSONObject
 import java.util.*
+import kotlin.concurrent.thread
 
 class MainPage : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -33,8 +34,7 @@ class MainPage : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main_page)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-
+        // TODO: get user_data from extra
         // set listeners
         findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
@@ -42,7 +42,17 @@ class MainPage : AppCompatActivity() {
         }
         findViewById<Button>(R.id.ButtonParked).setOnClickListener {
             // TODO:    Get current location and save to server
-            getLocation()
+            val addr : Address? = getLocation()
+            if (addr != null) {
+                APIUtil.postRequest("postParking", JSONObject()
+                    .put("id", "user_id")//TODO - change to user_id
+                    .put("location", "location_parser")) { // TODO: add location parser
+                    runOnUiThread {
+                        it.get("staus")
+                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
 //            val intent = Intent(this, MapsActivity::class.java)
@@ -119,14 +129,18 @@ class MainPage : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission", "SetTextI18n")
-    private fun getLocation() {
+    private fun getLocation():Address? {
+        var ret_addr :Address? = null
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     val location: Location? = task.result
                     if (location != null) {
                         val geocoder = Geocoder(this, Locale.getDefault())
-                        Toast.makeText(this, geocoder.getFromLocation(location.latitude, location.longitude, 1).toString(), Toast.LENGTH_LONG).show()
+                        val addr : Address
+                        addr = geocoder.getFromLocation(location.latitude, location.longitude, 1)[0]
+                        Toast.makeText(this, addr.getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
+                        ret_addr = addr
                     }
                 }
             } else {
@@ -137,5 +151,6 @@ class MainPage : AppCompatActivity() {
         } else {
             requestPermissions()
         }
+        return ret_addr
     }
 }
