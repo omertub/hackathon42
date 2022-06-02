@@ -2,6 +2,7 @@ package com.example.parkswitchapp
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,10 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuInflater
-import android.widget.PopupMenu
 import android.view.View
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
@@ -30,6 +29,7 @@ class MainPage : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
     private lateinit var userData: UserData
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +77,8 @@ class MainPage : AppCompatActivity() {
 //        return true
 //    }
     fun showPopup(v : View){
+        val user_name = "avi" //NEED TO GET NAME BACK FROM SERVER AFTER LOGIN AND PASS IT HERE WITH PUTEXRA
+        val tokens = "50" //SAME
         val popup = PopupMenu(this, v)
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.options, popup.menu)
@@ -84,6 +86,20 @@ class MainPage : AppCompatActivity() {
             when(menuItem.itemId){
                 R.id.my_profile-> {
                     //add here profile page reference
+                    dialog= Dialog(this)
+                    dialog.setContentView(R.layout.my_info_layout)
+                    dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+                    val MyName = dialog.findViewById<TextView>(R.id.my_name_text)
+                    val myTokens = dialog.findViewById<TextView>(R.id.tokens_text)
+                    MyName.text = MyName.text.toString().plus(user_name)
+                    myTokens.text = myTokens.text.toString().plus(tokens)
+
+                    val btnClose: ImageView = dialog.findViewById(R.id.btn_close2)
+                    btnClose.setOnClickListener(View.OnClickListener() {
+                            view-> dialog.dismiss()
+                    })
+                    dialog.show()
+
                 }
                 R.id.log_out-> {
                     val intent = Intent(this, MainActivity::class.java)
@@ -96,6 +112,7 @@ class MainPage : AppCompatActivity() {
     }
 
     private fun parkedClicked(view : View) {
+        Toast.makeText(this, "location saved", Toast.LENGTH_SHORT).show()
         // Get current location and save to server
         val addr : Address? = getLocation()
         if (addr != null) {
