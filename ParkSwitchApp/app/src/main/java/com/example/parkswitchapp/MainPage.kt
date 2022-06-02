@@ -10,12 +10,15 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuInflater
 import android.view.View
 import android.widget.*
+import android.widget.Button
+import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
@@ -23,7 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.json.JSONObject
 import java.util.*
-import kotlin.concurrent.thread
+
 
 class MainPage : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -65,10 +68,7 @@ class MainPage : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
-        findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
-//            val intent = Intent(this, MapsActivity::class.java)
-//            startActivity(intent)
-        }
+        findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener { TimePickerDialog(this).show()}
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,9 +127,6 @@ class MainPage : AppCompatActivity() {
         }
     }
 
-    private fun leaveClicked(view : View) {
-
-    }
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
