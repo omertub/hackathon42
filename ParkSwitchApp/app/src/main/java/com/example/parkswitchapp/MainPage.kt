@@ -1,17 +1,33 @@
 package com.example.parkswitchapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.widget.PopupMenu
 import android.view.View
+import android.widget.Button
 
 class MainPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main_page)
+
+        // set listeners
+        findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.ButtonParked).setOnClickListener {
+//            val intent = Intent(this, MapsActivity::class.java)
+//            startActivity(intent)
+        }
+        findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
+//            val intent = Intent(this, MapsActivity::class.java)
+//            startActivity(intent)
+        }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {

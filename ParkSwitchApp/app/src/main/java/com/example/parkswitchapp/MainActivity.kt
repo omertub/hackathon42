@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             Toast.makeText(this,"LOGIN FAILED", Toast.LENGTH_SHORT).show()
-            val maps_activity = Intent(this, MapsActivity::class.java)
-            startActivity(maps_activity)
+            val mp_activity = Intent(this, MainPage::class.java)//FIXME:remove once login implemented
+            startActivity(mp_activity)
         }
         // Hide the keyboard.
         val inputMethodManager =
