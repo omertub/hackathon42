@@ -21,8 +21,7 @@ class MainPage : AppCompatActivity() {
             startActivity(intent)
         }
         findViewById<Button>(R.id.ButtonParked).setOnClickListener {
-//            val intent = Intent(this, MapsActivity::class.java)
-//            startActivity(intent)
+            // TODO:    Get current location and save to server
         }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
 //            val intent = Intent(this, MapsActivity::class.java)
