@@ -45,29 +45,11 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Testing the API - Postman Link
+https://app.getpostman.com/join-team?invite_code=fa9ac6dc4a032b106628f0b01328b10d&ws=41ec9e82-eb28-48b0-b0a6-46b2f5e6f5e1
 
-```bash
-# unit tests
-$ npm run test
+## Sqlite GUI client
+Releases link: https://sqlitebrowser.org/dl/
 
-# e2e tests
-$ npm run test:e2e
+You can find the database file under ```./data/db.sqlite```
 
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

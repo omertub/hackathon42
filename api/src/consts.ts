@@ -1,0 +1,9 @@
+// you can add more if you need to
+export enum RESPONSE_STATUS {
+    OK = "OK",
+    USERNAME_ALREADY_EXISTS = "USERNAME_ALREADY_EXISTS",
+    INVALID_USERNAME_OR_PASSWORD =  "INVALID_USERNAME_OR_PASSWORD",
+    NOT_FOUND = "NOT_FOUND"
+}
+
+export const TOKENS_ADDITION = 10;
