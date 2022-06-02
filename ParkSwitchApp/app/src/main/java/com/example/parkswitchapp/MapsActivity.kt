@@ -10,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+//import com.google.android.gms.location
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.parkswitchapp.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -46,19 +47,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.isMyLocationEnabled = true
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Need to add here structs that contain user info and locations and times
+        val list_of_locations = ArrayList<LatLng>()
+        list_of_locations.add(LatLng(32.07607580161331, 34.85193881644974))
+        list_of_locations.add(LatLng(32.077594, 34.853908))
+        list_of_locations.add(LatLng(32.099492, 34.859029))
+        list_of_locations.add(LatLng(32.100656, 34.860145))
+        list_of_locations.add(LatLng(32.101219, 34.857977))
 
-        // Set the map coordinates to Kyoto Japan.
-        val address1 = LatLng(32.07607580161331, 34.85193881644974)
+
+        //val address1 = LatLng(32.07607580161331, 34.85193881644974)
         // Set the map type to Hybrid.
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
         // Add a marker on the map coordinates.
-        mMap.addMarker(MarkerOptions()
-            .position(address1).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-            .title("address1"))
+        for (location in list_of_locations) {
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(location)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .title(location.toString())
+            )
+        }
         //change HUE_AZURE to whatever values between 0 and 360 to control marker's color
         //.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_icon))
         // Move the camera to the map coordinates and zoom in closer.
