@@ -1,13 +1,16 @@
 package com.example.parkswitchapp
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
@@ -23,6 +26,7 @@ import com.example.parkswitchapp.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.tasks.OnSuccessListener
+import java.lang.Exception
 import java.lang.Thread.sleep
 import java.util.jar.Manifest
 
@@ -40,6 +44,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     var fusedLocationProviderClient: FusedLocationProviderClient? = null
 
+    private lateinit var orderButton: Button
+    private lateinit var dialog: Dialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +62,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         fetchLocation()
+
+        //val orderButton: Button = findViewById(R.id.btn_order)
     }
 
     private fun fetchLocation() {
@@ -69,6 +78,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
                     }
             })
+    }
+
+    private fun orderClicked(button: Button) {
+        //SEND TO BACKEND ORDER REQUEST!!!
+        //IF ORDER WAS SUCCESSFUL:
+        Toast.makeText(this,"order request sent successfully", Toast.LENGTH_SHORT).show()
+//        if(true) {
+//            Toast.makeText(this,"order request sent successfully", Toast.LENGTH_SHORT).show()
+        dialog.dismiss()
+//        }
     }
 
     /**
@@ -93,13 +112,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
         parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
 
-        var hashMap : HashMap<LatLng, usersWithLocations>
+        val hashMap : HashMap<LatLng, usersWithLocations>
                 = HashMap<LatLng, usersWithLocations> ()
 
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
         // Add a marker on the map coordinates.
         for (parked_user in parked_users) {
-            hashMap.put(parked_user.location, parked_user) //should be string and not LatLng?
+            try {
+                hashMap.put(parked_user.location, parked_user) //should be string and not LatLng?
+            } catch (e:Exception) {Toast.makeText(this,"SHAKED1", Toast.LENGTH_SHORT).show()}
             val color : Float
             if (parked_user.time<5.0)
                 color = BitmapDescriptorFactory.HUE_RED
@@ -124,37 +145,34 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setTrafficEnabled(true)
 
         mMap.setOnMarkerClickListener { marker ->
-            val user = hashMap.get(marker.position)
-
-            //TODO: open here a window from left/right/down with user info and a button to order
-            // this parking spot
-            val dialog: Dialog = Dialog(this)
+            //val dialog: Dialog = Dialog(this)
+            dialog= Dialog(this)
+            var user: usersWithLocations? = null
+            user = hashMap.get(marker.position)
+            //add more info - distance from me? TTL?
             dialog.setContentView(R.layout.layout_custom_dialog)
             dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
-            val btnClose: ImageView = dialog.findViewById(R.id.btn_close);
+
+            val parker_name :String = user!!.name
+            val leaving_in : String = user!!.time.toString()
+            val parkerTextView = dialog.findViewById<TextView>(R.id.txtDesc)
+            val leaveInTextView = dialog.findViewById<TextView>(R.id.leave_time)
+            parkerTextView.text = parkerTextView.text.toString().plus(parker_name)
+            leaveInTextView.text = leaveInTextView.text.toString().plus(leaving_in).plus(" minutes")
+            val btnClose: ImageView = dialog.findViewById(R.id.btn_close)
+            val orderButton : Button = dialog.findViewById(R.id.btn_order)
+            orderButton.setOnClickListener { orderClicked(orderButton) }
 
             btnClose.setOnClickListener(View.OnClickListener() {
-                view-> dialog.dismiss();
+                view-> dialog.dismiss()
             })
+            dialog.show()
 
-            dialog.show();
-            //mMap.getUiSettings().setMapToolbarEnabled(true)
-//            if (!marker.isInfoWindowShown) {
-//                marker.showInfoWindow()
-//
-//            }
-//
-//            Toast.makeText(this,marker.position.toString(), Toast.LENGTH_SHORT).show()
-////            if (marker.isInfoWindowShown) {
-////                marker.hideInfoWindow()
-////            } else {
-////                marker.showInfoWindow()
-////            }
-//            //true
             false //ARIK: forcing google to also activate default listener which opens directions
         }
 
+
+
         //mMap.getUiSettings().setMapToolbarEnabled(true)
     }
-
 }

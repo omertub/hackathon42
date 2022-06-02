@@ -63,6 +63,7 @@ class MainPage : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
+
         findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
 //            val intent = Intent(this, MapsActivity::class.java)
@@ -82,10 +83,11 @@ class MainPage : AppCompatActivity() {
       popup.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.my_profile-> {
-
+                    //add here profile page reference
                 }
                 R.id.log_out-> {
-
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
             }
             true
