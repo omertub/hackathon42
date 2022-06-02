@@ -59,17 +59,17 @@ class MainPage : AppCompatActivity() {
         val popup = PopupMenu(this, v)
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.options, popup.menu)
-//        popup.setOnMenuItemClickListener { menuItem ->
-//            when(menuItem.itemId){
-//                R.id.action1-> {
-//
-//                }
-//                R.id.action2-> {
-//
-//                }
-//            }
-//            true
-//        }
+      popup.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.my_profile-> {
+
+                }
+                R.id.log_out-> {
+
+                }
+            }
+            true
+        }
         popup.show()
     }
 

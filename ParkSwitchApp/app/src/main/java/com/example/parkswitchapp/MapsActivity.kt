@@ -1,9 +1,12 @@
 package com.example.parkswitchapp
 
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,11 +19,23 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.parkswitchapp.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.tasks.OnSuccessListener
+import java.lang.Thread.sleep
+import java.util.jar.Manifest
+
+class usersWithLocations (user_id: String, name: String, location: LatLng, time: Double) {
+    val name = name
+    val user_id = user_id
+    val location = location
+    val time = time
+}
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    var fusedLocationProviderClient: FusedLocationProviderClient? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +48,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        fetchLocation()
+    }
+
+    private fun fetchLocation() {
+        fusedLocationProviderClient!!.getLastLocation()
+            .addOnSuccessListener(this, OnSuccessListener<Location>() {
+                location ->
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        // Logic to handle location object
+                        val latLng = LatLng(location.latitude, location.longitude)
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
+                    }
+            })
     }
 
     /**
@@ -49,33 +82,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
         // Need to add here structs that contain user info and locations and times
-        val list_of_locations = ArrayList<LatLng>()
-        list_of_locations.add(LatLng(32.07607580161331, 34.85193881644974))
-        list_of_locations.add(LatLng(32.077594, 34.853908))
-        list_of_locations.add(LatLng(32.099492, 34.859029))
-        list_of_locations.add(LatLng(32.100656, 34.860145))
-        list_of_locations.add(LatLng(32.101219, 34.857977))
+
+        val parked_users = ArrayList<usersWithLocations>()
+        parked_users.add(usersWithLocations("1","avi1",LatLng(32.07607580161331, 34.85193881644974),14.0))
+        parked_users.add(usersWithLocations("2","avi2",LatLng(32.077594, 34.853908),5.5))
+        parked_users.add(usersWithLocations("3","avi3",LatLng(32.099492, 34.859029),4.5))
+        parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
+        parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
 
 
-        //val address1 = LatLng(32.07607580161331, 34.85193881644974)
-        // Set the map type to Hybrid.
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
         // Add a marker on the map coordinates.
-        for (location in list_of_locations) {
+        for (parked_user in parked_users) {
+            val color : Float
+            if (parked_user.time<5.0)
+                color = BitmapDescriptorFactory.HUE_RED
+            else if (parked_user.time<10.0)
+                color = BitmapDescriptorFactory.HUE_ORANGE
+            else
+                color = BitmapDescriptorFactory.HUE_GREEN
             mMap.addMarker(
                 MarkerOptions()
-                    .position(location)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .title(location.toString())
+                    .position(parked_user.location)
+                    .icon(BitmapDescriptorFactory.defaultMarker(color))
+                    .title(parked_user.toString())
             )
         }
         //change HUE_AZURE to whatever values between 0 and 360 to control marker's color
         //.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_icon))
         // Move the camera to the map coordinates and zoom in closer.
-        val zoom = 20f
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(zoom))
+        //mMap.moveCamera(CameraUpdateFactory.zoomTo(20f))
         // Display traffic.
         mMap.setTrafficEnabled(true)
 
@@ -100,4 +138,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //mMap.getUiSettings().setMapToolbarEnabled(true)
     }
+
 }
