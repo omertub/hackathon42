@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
-    style="@style/BackgroundStyle">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/BackgroundStyle"
+    android:gravity="center_horizontal">
 
     <ImageView
         android:id="@+id/image_banner"
@@ -41,17 +44,38 @@
         android:textAlignment="center" />
 
     <Button
-        android:id="@+id/login_button_id"
+        android:id="@+id/ButtonLogin"
         style="@style/SIGNUP_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:backgroundTint="#AFA4A4"
-        android:gravity="center"
         android:shadowColor="@color/white"
         android:text="LOG IN"
         android:textAlignment="center"
         android:textSize="20dp"
         android:textStyle="normal" />
 
+    <Button
+        android:id="@+id/ButtonSignup"
+        style="@style/SIGNUP_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#AFA4A4"
+        android:shadowColor="@color/white"
+        android:text="SIGN UP"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/ButtonSkip"
+        style="@style/SIGNUP_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#AFA4A4"
+        android:shadowColor="@color/white"
+        android:text="SKIP LOGIN"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="normal" />
 </LinearLayout>
