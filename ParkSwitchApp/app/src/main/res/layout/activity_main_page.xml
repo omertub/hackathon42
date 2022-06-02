@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainPage"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    style="@style/BackgroundStyle">
 
     <FrameLayout
-        style="@style/BackgroundStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:orientation="vertical"

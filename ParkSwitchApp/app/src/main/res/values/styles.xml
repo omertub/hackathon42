@@ -13,8 +13,6 @@
     </style>
 
     <style name="BackgroundStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
         <item name="android:background">#EFEDED</item>
         <item name="android:orientation">vertical</item>
     </style>
