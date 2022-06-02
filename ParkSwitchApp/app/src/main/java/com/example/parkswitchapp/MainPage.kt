@@ -63,7 +63,7 @@ class MainPage : AppCompatActivity() {
 
         // set listeners
         findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
-            val intent = Intent(this, MapsActivity::class.java)
+            val intent = Intent(this, SearcherActivity::class.java)
             startActivity(intent)
         }
 
