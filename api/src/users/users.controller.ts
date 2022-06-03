@@ -100,8 +100,6 @@ export class UserController {
     async commitParking(@Body() commitParking: any) {
         const { ownerUser, parkerUser } = await this.userService.commitParking(commitParking);
 
-        console.log("🚀 ~ file: users.controller.ts ~ line 107 ~ UserController ~ commitParking ~ parkingCommitted", ownerUser.id,)
-
         this.eventsGateway.server.emit('parkingCommitted', {
             id: ownerUser.id,
             parkerUser: parkerUser

@@ -26,7 +26,7 @@ export class UserService {
     return users;
   }
 
-  async findAllMarkers() {    
+  async findAllMarkers() { 
     const users = await this.usersRepository.find();
     const markerUsers = users.filter(user => {
       const now = new Date();
