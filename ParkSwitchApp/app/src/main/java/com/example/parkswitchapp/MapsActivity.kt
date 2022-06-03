@@ -204,28 +204,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-//        val parked_users = ArrayList<usersWithLocations>()
-//        parked_users.add(usersWithLocations("1","Avi Cohen",LatLng(32.07607580161331, 34.85193881644974),14.0))
-//        parked_users.add(usersWithLocations("2","Omer Tubul",LatLng(32.077594, 34.853908),5.5))
-//        parked_users.add(usersWithLocations("3","Matan Eshel",LatLng(32.099492, 34.859029),4.5))
-//        parked_users.add(usersWithLocations("4","Arik Friedman",LatLng(32.100656, 34.860145),9.0))
-//        parked_users.add(usersWithLocations("5","Yehonatan Mizrahi",LatLng(32.101219, 34.857977),3.0))
-//        parked_users.add(usersWithLocations("6","Eli",LatLng(32.102219, 34.857977),3.0))
-//        parked_users.add(usersWithLocations("7","Yoni Shitrit",LatLng(32.101219, 34.856977),11.0))
-//        parked_users.add(usersWithLocations("8","Avia Cohen",LatLng(32.101519, 34.858977),3.0))
-//        parked_users.add(usersWithLocations("9","Ruth Nimni",LatLng(32.102219, 34.847977),12.0))
-//        parked_users.add(usersWithLocations("10","Oriya Cohen",LatLng(32.101219, 34.877977),7.0))
-//        parked_users.add(usersWithLocations("11","Mazal Levi",LatLng(32.101239, 34.837977),6.0))
-//        parked_users.add(usersWithLocations("12","Kobi Mahat",LatLng(32.101229, 34.887977),3.0))
 
         }
-
-//        val parked_users = ArrayList<usersWithLocations>()
-//        parked_users.add(usersWithLocations("1","avi1",LatLng(32.07607580161331, 34.85193881644974),14.0))
-//        parked_users.add(usersWithLocations("2","avi2",LatLng(32.077594, 34.853908),5.5))
-//        parked_users.add(usersWithLocations("3","avi3",LatLng(32.099492, 34.859029),4.5))
-//        parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
-//        parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
 
     }
 }
