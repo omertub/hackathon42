@@ -43,51 +43,16 @@ class MainPage : AppCompatActivity() {
         // set listeners
         findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
             val intent = Intent(this, SearcherActivity::class.java)
+            intent.putExtra("user_data", id)
             startActivity(intent)
         }
         findViewById<Button>(R.id.ButtonDiscounts).setOnClickListener {
             val intent = Intent(this, DiscountsActivity::class.java)
             startActivity(intent)
         }
+
         findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener { TimePickerDialog(this).show()}
-    }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        val inflater : MenuInflater = getMenuInflater()
-//        inflater.inflate(R.menu.options, menu);
-//        return true
-//    }
-    fun showPopup(v : View){
-        val popup = PopupMenu(this, v)
-        val inflater: MenuInflater = popup.menuInflater
-        inflater.inflate(R.menu.options, popup.menu)
-      popup.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
-                R.id.my_profile-> {
-                    //add here profile page reference
-                    dialog= Dialog(this)
-                    dialog.setContentView(R.layout.my_info_layout)
-                    dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
-                    val MyName = dialog.findViewById<TextView>(R.id.my_name_text)
-                    val myTokens = dialog.findViewById<TextView>(R.id.tokens_text)
-                    MyName.text = MyName.text.toString().plus(UserData.username)
-                    myTokens.text = myTokens.text.toString().plus(UserData.tokens)
-                    val btnClose: ImageView = dialog.findViewById(R.id.btn_close2)
-                    btnClose.setOnClickListener(View.OnClickListener() {
-                            view-> dialog.dismiss()
-                    })
-                    dialog.show()
-
-                }
-                R.id.log_out-> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-            true
-        }
-        popup.show()
     }
 
     private fun parkedClicked(view : View) {
@@ -98,6 +63,7 @@ class MainPage : AppCompatActivity() {
                 .put("id", UserData.id)
                 .put("location", it)) {
                 runOnUiThread {
+
                     it.get("status")
                     Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
                 }

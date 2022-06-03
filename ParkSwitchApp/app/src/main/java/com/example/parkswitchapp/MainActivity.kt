@@ -45,61 +45,42 @@ class MainActivity : AppCompatActivity() {
                     // Hide the keyboard.
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                    val mainPageActivity = Intent(this, MainPage::class.java)
-                    startActivity(mainPageActivity)
+
+                    // Call MainPage activity
+                    val intent = Intent(this, MainPage::class.java)
+                    startActivity(intent)
                 }
             }
         }
 
-
-        //send user_name and password to backend and get back name and user_id
-
-        // TODO: Login
-
-//        if (username_string == "" && password_string == "") {
-//            Toast.makeText(this, "LOGIN SUCCESFULL", Toast.LENGTH_SHORT).show()
-//            //startActivity(Intent(this, MainPage::class.java))
-//
-//            // get user data
-//            APIUtil.getRequest("user?userId=1") {
-//                // the object 'it' is the JSONObject that contains the backend response
-//                // this callback is running on a separate thread, so if we want
-//                // to update the UI we need to run it on a UI thread
-//                runOnUiThread {
-//                    val status = it.get("status") as String
-//                    if (status != "OK") {
-//                        Toast.makeText(this, "Error! $status", Toast.LENGTH_LONG).show()
-//                    } else {
-//                        val user = it.get("user") as JSONObject
-//                        val userId = user.get("id") as Int
-//                        val username = user.get("username") as String
-//                        Toast.makeText(
-//                            this,
-//                            "Welcome $username! (userId: $userId)",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//
-//                }
-//                val main_page_activity = Intent(this, MainPage::class.java)
-//                main_page_activity.putExtra("user_data", 1) // TODO: change to id
-//                startActivity(main_page_activity)
-//            }
-//            else {
-//                Toast.makeText(this, "LOGIN FAILED", Toast.LENGTH_SHORT).show()
-//                val mp_activity =
-//                    Intent(this, MainPage::class.java)//FIXME:remove once login implemented
-//                startActivity(mp_activity)
-//            }
-//            // Hide the keyboard.
-//            val inputMethodManager =
-//                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-//
-//        }
-
     }
 
-    private fun signupClicked(view: View) {}
+    private fun signupClicked(view: View) {
+        val username = findViewById<EditText>(R.id.username_id).text.toString()
+        val password = findViewById<EditText>(R.id.password_id).text.toString()
+
+        APIUtil.postRequest(
+            "signup", JSONObject()
+                .put("username", username)
+                .put("password", password) )
+        {
+            runOnUiThread {
+                it.get("status")
+                val status = it.get("status") as String
+                if (status != "OK") {
+                    Toast.makeText(this.applicationContext, "Error! $status", Toast.LENGTH_LONG).show()
+                } else {
+                    val user = it.get("user") as JSONObject
+                    var id = user.get("id") as Int
+                    Toast.makeText(this.applicationContext, "Signed up! id: $id", Toast.LENGTH_LONG).show()
+
+                    // Hide the keyboard.
+                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+                }
+            }
+        }
+    }
 }
 
