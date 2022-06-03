@@ -132,9 +132,7 @@ class MainPage : AppCompatActivity() {
                 .put("id", UserData.id)
                 .put("location", it)) {
                 runOnUiThread {
-
                     it.get("status")
-                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -102,13 +102,6 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                     }
                 }
 
-                APIUtil.getRequest("user?userId=${UserData.id}") {
-                        val status = it.get("status") as String
-                        if (status == "OK") {
-                            val user = it.get("user") as JSONObject
-                            UserData.init_user_data(user)
-                        }
-                }
 
                 dismiss()
             }

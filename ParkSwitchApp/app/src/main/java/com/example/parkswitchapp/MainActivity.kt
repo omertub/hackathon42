@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     val user = it.get("user") as JSONObject
                     UserData.init_user_data(user)
-                    Toast.makeText(this.applicationContext, "id: ${UserData.id}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.applicationContext, "Logged in: ${UserData.username}", Toast.LENGTH_LONG).show()
 
                     // Hide the keyboard.
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
