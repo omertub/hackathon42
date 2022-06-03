@@ -16,7 +16,7 @@ import kotlin.concurrent.thread
 
 class APIUtil {
     companion object {
-        private const val url = "http://192.168.100.2:3000/"
+        private const val url = "http://10.0.2.2:3000/"
         private val client = OkHttpClient()
         private val jsonMediaType = "application/json; charset=utf-8".toMediaTypeOrNull()
 
