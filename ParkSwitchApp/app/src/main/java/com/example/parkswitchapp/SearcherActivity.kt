@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.MenuInflater
 import android.view.View
 import android.widget.*
+import com.example.parkswitchapp.utils.APIUtil
+import com.example.parkswitchapp.utils.UserData
+import org.json.JSONObject
 
 class SearcherActivity : AppCompatActivity() {
 
@@ -18,8 +21,12 @@ class SearcherActivity : AppCompatActivity() {
         setContentView(R.layout.activity_searcher)
 
         findViewById<Button>(R.id.confirm_switch_button).setOnClickListener {
-            //SEND CONFIRMATION TO SERVER, AND FROM THERE TO BE APPROVED BY THE PARKER
-            Toast.makeText(this, "approved!", Toast.LENGTH_SHORT).show()
+            APIUtil.postRequest("park", JSONObject()
+                .put("id", UserData.id)) {
+                runOnUiThread {
+                    Toast.makeText(this, "approved!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         findViewById<Button>(R.id.search_map_button).setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)

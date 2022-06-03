@@ -46,9 +46,24 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                             val user  = it.get("parkerUser") as JSONObject
                             val username = user.get("username") as String
                             Toast.makeText(this.appContext, "Parking committed by $username", Toast.LENGTH_LONG).show()
+                            APIUtil.clean("parkingCommitted")
                         }
                     }
-                    APIUtil.clean("parkingCommitted")
+                }
+
+                // set ws listener for parkingCompleted event
+                APIUtil.on("parkingCompleted") {
+                    this.appContext.runOnUiThread {
+                        if (UserData.id == it.get("id") as Int) {
+                            // TODO: change to dialog
+                            Toast.makeText(
+                                this.appContext,
+                                "Parking completed. 10 tokens added successfully!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            APIUtil.clean("parkingCompleted")
+                        }
+                    }
                 }
 
                 dismiss()

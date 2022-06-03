@@ -121,7 +121,8 @@ export class UserService {
       id: owenrUser.id,
       tokens: owenrUser.tokens + TOKENS_ADDITION,
       location: null,
-      parkerId: null
+      parkerId: null,
+      expirationTime: null
     });
 
     const updatedUser = await this.findUser(owenrUser.id);
