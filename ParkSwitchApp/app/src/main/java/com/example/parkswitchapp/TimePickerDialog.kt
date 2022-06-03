@@ -6,9 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.NumberPicker
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
@@ -19,6 +17,8 @@ import java.util.*
 class TimePickerDialog(context: Activity) : Dialog(context){
 
     val appContext = context
+    private lateinit var dialog: Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -45,7 +45,24 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                             // TODO: change to dialog
                             val user  = it.get("parkerUser") as JSONObject
                             val username = user.get("username") as String
-                            Toast.makeText(this.appContext, "Parking committed by $username", Toast.LENGTH_LONG).show()
+                            //POPUP DIALOG:
+                            dialog = Dialog(this.appContext)
+                            //add more info - distance from me? TTL?
+                            dialog.setContentView(R.layout.match_layout)
+                            dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+
+                            val parkerTextView = dialog.findViewById<TextView>(R.id.matched_name)
+                            parkerTextView.text = parkerTextView.text.toString().plus(username)
+                            val btnClose: ImageView = dialog.findViewById(R.id.btn_close3)
+
+                            btnClose.setOnClickListener(View.OnClickListener() {
+                                    view-> dialog.dismiss()
+                            })
+                            dialog.show()
+
+
+                            //
+                            //Toast.makeText(this.appContext, "Parking committed by $username", Toast.LENGTH_LONG).show()
                             APIUtil.clean("parkingCommitted")
                         }
                     }
