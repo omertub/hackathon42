@@ -10,7 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
-import com.example.parkswitchapp.utils.UserData.Companion.update_tokens
 import org.json.JSONObject
 import java.util.*
 
@@ -36,8 +35,6 @@ class TimePickerDialog(context: Activity) : Dialog(context){
 
             val date = Date()
             val expirationTime = date.time + picker.value * 60 * 1000
-
-            Toast.makeText(this.context, "$expirationTime", Toast.LENGTH_SHORT).show()
 
             APIUtil.postRequest("setExpirationTime", JSONObject()
                 .put("id", UserData.id)

@@ -20,8 +20,5 @@ class UserData {
             tokens = user.get("tokens") as Int
         }
 
-        fun update_tokens(tokens:Int) {
-            this.tokens = tokens
-        }
     }
 }
