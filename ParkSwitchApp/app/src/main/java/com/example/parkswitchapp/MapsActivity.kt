@@ -151,7 +151,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         MarkerOptions()
                             .position(parked_user.location)
                             .icon(BitmapDescriptorFactory.defaultMarker(color))
-                            .title(parked_user.toString())
                     )
                 }
                 //change HUE_AZURE to whatever values between 0 and 360 to control marker's color
