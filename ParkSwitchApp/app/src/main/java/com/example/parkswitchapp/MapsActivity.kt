@@ -156,11 +156,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     } catch (e:Exception) {Toast.makeText(this,"SHAKED1", Toast.LENGTH_SHORT).show()}
                     val color : Float
                     if (parked_user.time<5.0)
-                        color = BitmapDescriptorFactory.HUE_GREEN
+                        color = BitmapDescriptorFactory.HUE_RED
                     else if (parked_user.time<10.0)
                         color = BitmapDescriptorFactory.HUE_ORANGE
                     else
-                        color = BitmapDescriptorFactory.HUE_RED
+                        color = BitmapDescriptorFactory.HUE_GREEN
                     mMap.addMarker(
                         MarkerOptions()
                             .position(parked_user.location)
