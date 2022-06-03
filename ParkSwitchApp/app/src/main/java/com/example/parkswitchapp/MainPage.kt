@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.parkswitchapp.utils.APIUtil
+import com.example.parkswitchapp.utils.LocationUtil
 import com.example.parkswitchapp.utils.UserData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -31,7 +32,6 @@ import java.util.*
 class MainPage : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
-    private lateinit var userData: UserData
     private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,27 +39,6 @@ class MainPage : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main_page)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        // get user_data from extra
-
-        val id = getIntent().getExtras()?.getInt("user_data")
-//        // TODO: use user_id to get data
-//        APIUtil.getRequest("user?userId=1") {
-//            runOnUiThread {
-//                val status = it.get("status") as String
-//                if (status != "OK") {
-//                    Toast.makeText(this, "Error! $status", Toast.LENGTH_LONG).show()
-//                }
-//                else {
-//                    val user = it.get("user") as JSONObject
-//                    userData = UserData.init_user_data(user)
-//                    Toast.makeText(this, "Welcome ${userData.username}! (userId: ${userData.id})", Toast.LENGTH_LONG).show()
-//                }
-//
-//            }
-//        }
-        //TODO: remove once implemented
-        userData = UserData(1, "Matan",  100, null, null)
 
         // set listeners
         findViewById<Button>(R.id.ButtonFindParking).setOnClickListener {
@@ -114,11 +93,10 @@ class MainPage : AppCompatActivity() {
     private fun parkedClicked(view : View) {
         Toast.makeText(this, "location saved", Toast.LENGTH_SHORT).show()
         // Get current location and save to server
-        val addr : Address? = getLocation()
-        if (addr != null) {
-            APIUtil.postRequest("postParking", JSONObject()
-                .put("id", userData.id)
-                .put("location", UserData.parseLocation(addr.longitude, addr.latitude))) {
+        getLocation() {
+            APIUtil.postRequest("saveParkingLocation", JSONObject()
+                .put("id", UserData.id)
+                .put("location", it)) {
                 runOnUiThread {
                     it.get("status")
                     Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
@@ -168,14 +146,13 @@ class MainPage : AppCompatActivity() {
     ) {
         if (requestCode == permissionId) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLocation()
+//                getLocation()
             }
         }
     }
 
     @SuppressLint("MissingPermission", "SetTextI18n")
-    private fun getLocation():Address? {
-        var ret_addr :Address? = null
+    private fun getLocation(callback: (location: String) -> Any) {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
@@ -185,7 +162,7 @@ class MainPage : AppCompatActivity() {
                         val addr : Address
                         addr = geocoder.getFromLocation(location.latitude, location.longitude, 1)[0]
                         Toast.makeText(this, addr.getAddressLine(0).toString(), Toast.LENGTH_LONG).show()
-                        ret_addr = addr
+                        callback(LocationUtil.parseLocation(addr.longitude, addr.latitude))
                     }
                 }
             } else {
@@ -196,7 +173,6 @@ class MainPage : AppCompatActivity() {
         } else {
             requestPermissions()
         }
-        return ret_addr
     }
 
 }

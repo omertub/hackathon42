@@ -11,7 +11,7 @@ export const databaseProviders = [
         entities: [
           User
         ],
-        logging: true,
+        // logging: true,
         synchronize: true,
       });
 

@@ -13,10 +13,6 @@ import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
 import org.json.JSONObject
 
-class User (username: String, password: String) {
-    val username = username
-    val password = password
-}
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +34,18 @@ class MainActivity : AppCompatActivity() {
                 .put("password", password) )
         {
             runOnUiThread {
-                it.get("status")
                 val status = it.get("status") as String
                 if (status != "OK") {
                     Toast.makeText(this.applicationContext, "Error! $status", Toast.LENGTH_LONG).show()
                 } else {
                     val user = it.get("user") as JSONObject
-                    var id = user.get("id") as Int
-                    Toast.makeText(this.applicationContext, "id: $id", Toast.LENGTH_LONG).show()
+                    UserData.init_user_data(user)
+                    Toast.makeText(this.applicationContext, "id: ${UserData.id}", Toast.LENGTH_LONG).show()
 
                     // Hide the keyboard.
                     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                     val mainPageActivity = Intent(this, MainPage::class.java)
-                    mainPageActivity.putExtra("user_data", id)
                     startActivity(mainPageActivity)
                 }
             }

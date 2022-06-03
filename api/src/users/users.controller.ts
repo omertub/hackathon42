@@ -70,9 +70,17 @@ export class UserController {
         return { status: RESPONSE_STATUS.OK, user: user }
     }
 
-    @Post('postParking')
-    async postParking(@Body() postParking: any) {
-        const user = await this.userService.postParking(postParking);
+    @Post('saveParkingLocation')
+    async saveParkingLocation(@Body() saveParkingLocation: any) {
+        const user = await this.userService.saveParkingLocation(saveParkingLocation);
+        return {
+            status: RESPONSE_STATUS.OK   
+        }
+    }
+
+    @Post('setExpirationTime')
+    async setExpirationTime(@Body() setExpirationTime: any) {
+        const user = await this.userService.setExpirationTime(setExpirationTime);
         return {
             status: RESPONSE_STATUS.OK   
         }

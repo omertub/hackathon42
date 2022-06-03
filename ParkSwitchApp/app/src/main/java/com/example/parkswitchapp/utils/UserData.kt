@@ -1,29 +1,22 @@
 package com.example.parkswitchapp.utils
 
+import com.google.android.gms.maps.model.LatLng
 import org.json.JSONObject
 
-class UserData(
-    val id: Int,
-    val username: String,
-    val tokens: Int,
-    val location: String?,
-    val parkerId: Int?,
-) {
+class UserData {
 
     companion object {
-        fun parseLocation(lon: Double, lat: Double): String {
-            return "$lon/$lat"
+
+        var id: Int? = null
+        var username: String? = null
+        var tokens: Int? = null
+        var location: String? = null
+        var parkerId: Int? = null
+
+        fun init_user_data(user: JSONObject) {
+            id = user.get("id") as Int
+            username = user.get("username") as String
+            tokens = user.get("tokens") as Int
         }
-
-        fun init_user_data(user: JSONObject) : UserData {
-            val userId = user.get("id") as Int
-            val username = user.get("username") as String
-            val tokens = user.get("tokens") as Int
-            val location = user.get("location") as String
-            val parkid = user.get("parkId") as Int
-            return UserData(userId, username,  tokens, location, parkid)
-        }
-
-
     }
 }

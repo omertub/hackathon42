@@ -28,7 +28,15 @@ export class UserService {
 
   async findAllMarkers() {    
     const users = await this.usersRepository.find();
-    const markerUsers = users.filter(user => user.location !== null && user.parkerId === null);
+    const markerUsers = users.filter(user => {
+      const now = new Date();
+      const expirationTime = new Date(user.expirationTime);
+
+      return user.location !== null
+            && user.parkerId === null
+            && user.expirationTime !== null
+            && expirationTime.getTime() - now.getTime() > 0
+          });
     return markerUsers;
   }
 
@@ -64,10 +72,16 @@ export class UserService {
     return user;
   }
 
-  async postParking(postParking: any) {
-    await this.usersRepository.save(postParking);
-    const updatedUser = await this.findUser(postParking.id);
+  async saveParkingLocation(saveParkingLocation: any) {
+    await this.usersRepository.save(saveParkingLocation);
+    const updatedUser = await this.findUser(saveParkingLocation.id);
 
+    return updatedUser;
+  }
+
+  async setExpirationTime(setExpirationTime: any) {
+    await this.usersRepository.save(setExpirationTime);
+    const updatedUser = await this.findUser(setExpirationTime.id);
     return updatedUser;
   }
 

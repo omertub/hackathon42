@@ -20,4 +20,7 @@ export class User {
 
   @Column({ default: null })
   parkerId: number;
+
+  @Column({ default: null })
+  expirationTime: string;
 }

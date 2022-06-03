@@ -23,18 +23,25 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.parkswitchapp.databinding.ActivityMapsBinding
+import com.example.parkswitchapp.utils.APIUtil
+import com.example.parkswitchapp.utils.LocationUtil
+import com.example.parkswitchapp.utils.UserData
+import com.example.parkswitchapp.utils.UserInfo
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.tasks.OnSuccessListener
+import org.json.JSONArray
+import org.json.JSONObject
 import java.lang.Exception
 import java.lang.Thread.sleep
 import java.util.jar.Manifest
+import kotlin.concurrent.thread
 
-class usersWithLocations (user_id: String, name: String, location: LatLng, time: Double) {
-    val name = name
-    val user_id = user_id
-    val location = location
-    val time = time
+class UsersWithLocations (userInfo: UserInfo) {
+    val username = userInfo.username
+    val id = userInfo.id
+    val location = LocationUtil.splitLocation(userInfo.location!!)
+    val time = 5 // TODO
 }
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -80,14 +87,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             })
     }
 
-    private fun orderClicked(button: Button) {
-        //SEND TO BACKEND ORDER REQUEST!!!
-        //IF ORDER WAS SUCCESSFUL:
-        Toast.makeText(this,"order request sent successfully", Toast.LENGTH_SHORT).show()
-//        if(true) {
-//            Toast.makeText(this,"order request sent successfully", Toast.LENGTH_SHORT).show()
+    private fun orderClicked(button: Button, user: UsersWithLocations) {
+        APIUtil.postRequest("commitParking", JSONObject()
+            .put("id", UserData.id)
+            .put("ownerId", user.id)) {
+            runOnUiThread {
+                val status = it.get("status") as String
+                if (status == "OK") {
+                    Toast.makeText(this,"order request sent successfully", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         dialog.dismiss()
-//        }
     }
 
     /**
@@ -104,75 +116,84 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
         // Need to add here structs that contain user info and locations and times
+        APIUtil.getRequest("markers") {
+            runOnUiThread {
+                val parked_users = ArrayList<UsersWithLocations>()
 
-        val parked_users = ArrayList<usersWithLocations>()
-        parked_users.add(usersWithLocations("1","avi1",LatLng(32.07607580161331, 34.85193881644974),14.0))
-        parked_users.add(usersWithLocations("2","avi2",LatLng(32.077594, 34.853908),5.5))
-        parked_users.add(usersWithLocations("3","avi3",LatLng(32.099492, 34.859029),4.5))
-        parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
-        parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
+                val markers = it.get("markers") as JSONArray
+                for (i in 0 until markers.length()) {
+                    val marker = markers[i] as JSONObject
+                    val userInfo = UserInfo.init_user_info(marker)
+                    parked_users.add(UsersWithLocations(userInfo))
+                }
 
-        val hashMap : HashMap<LatLng, usersWithLocations>
-                = HashMap<LatLng, usersWithLocations> ()
+                val hashMap : HashMap<LatLng, UsersWithLocations>
+                        = HashMap<LatLng, UsersWithLocations> ()
 
-        //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
-        // Add a marker on the map coordinates.
-        for (parked_user in parked_users) {
-            try {
-                hashMap.put(parked_user.location, parked_user) //should be string and not LatLng?
-            } catch (e:Exception) {Toast.makeText(this,"SHAKED1", Toast.LENGTH_SHORT).show()}
-            val color : Float
-            if (parked_user.time<5.0)
-                color = BitmapDescriptorFactory.HUE_GREEN
-            else if (parked_user.time<10.0)
-                color = BitmapDescriptorFactory.HUE_ORANGE
-            else
-                color = BitmapDescriptorFactory.HUE_RED
-            mMap.addMarker(
-                MarkerOptions()
-                    .position(parked_user.location)
-                    .icon(BitmapDescriptorFactory.defaultMarker(color))
-                    .title(parked_user.toString())
-            )
+                //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID)
+                // Add a marker on the map coordinates.
+                for (parked_user in parked_users) {
+                    try {
+                        hashMap.put(parked_user.location, parked_user) //should be string and not LatLng?
+                    } catch (e:Exception) {Toast.makeText(this,"SHAKED1", Toast.LENGTH_SHORT).show()}
+                    val color : Float
+                    if (parked_user.time<5.0)
+                        color = BitmapDescriptorFactory.HUE_GREEN
+                    else if (parked_user.time<10.0)
+                        color = BitmapDescriptorFactory.HUE_ORANGE
+                    else
+                        color = BitmapDescriptorFactory.HUE_RED
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(parked_user.location)
+                            .icon(BitmapDescriptorFactory.defaultMarker(color))
+                            .title(parked_user.toString())
+                    )
+                }
+                //change HUE_AZURE to whatever values between 0 and 360 to control marker's color
+                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_icon))
+                // Move the camera to the map coordinates and zoom in closer.
+
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
+                //mMap.moveCamera(CameraUpdateFactory.zoomTo(20f))
+                // Display traffic.
+                mMap.setTrafficEnabled(true)
+
+                mMap.setOnMarkerClickListener { marker ->
+                    //val dialog: Dialog = Dialog(this)
+                    dialog= Dialog(this)
+                    var user: UsersWithLocations? = null
+                    user = hashMap.get(marker.position)
+                    //add more info - distance from me? TTL?
+                    dialog.setContentView(R.layout.layout_custom_dialog)
+                    dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+
+                    val parker_name :String = user!!.username
+                    val leaving_in : String = user!!.time.toString()
+                    val parkerTextView = dialog.findViewById<TextView>(R.id.txtDesc)
+                    val leaveInTextView = dialog.findViewById<TextView>(R.id.leave_time)
+                    parkerTextView.text = parkerTextView.text.toString().plus(parker_name)
+                    leaveInTextView.text = leaveInTextView.text.toString().plus(leaving_in).plus(" minutes")
+                    val btnClose: ImageView = dialog.findViewById(R.id.btn_close)
+                    val orderButton : Button = dialog.findViewById(R.id.btn_order)
+                    orderButton.setOnClickListener { orderClicked(orderButton, user) }
+
+                    btnClose.setOnClickListener(View.OnClickListener() {
+                            view-> dialog.dismiss()
+                    })
+                    dialog.show()
+
+                    false //ARIK: forcing google to also activate default listener which opens directions
+                }
+            }
         }
-        //change HUE_AZURE to whatever values between 0 and 360 to control marker's color
-        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.gray_icon))
-        // Move the camera to the map coordinates and zoom in closer.
 
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)))
-        //mMap.moveCamera(CameraUpdateFactory.zoomTo(20f))
-        // Display traffic.
-        mMap.setTrafficEnabled(true)
+//        val parked_users = ArrayList<usersWithLocations>()
+//        parked_users.add(usersWithLocations("1","avi1",LatLng(32.07607580161331, 34.85193881644974),14.0))
+//        parked_users.add(usersWithLocations("2","avi2",LatLng(32.077594, 34.853908),5.5))
+//        parked_users.add(usersWithLocations("3","avi3",LatLng(32.099492, 34.859029),4.5))
+//        parked_users.add(usersWithLocations("4","avi4",LatLng(32.100656, 34.860145),9.0))
+//        parked_users.add(usersWithLocations("5","avi5",LatLng(32.101219, 34.857977),3.0))
 
-        mMap.setOnMarkerClickListener { marker ->
-            //val dialog: Dialog = Dialog(this)
-            dialog= Dialog(this)
-            var user: usersWithLocations? = null
-            user = hashMap.get(marker.position)
-            //add more info - distance from me? TTL?
-            dialog.setContentView(R.layout.layout_custom_dialog)
-            dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
-
-            val parker_name :String = user!!.name
-            val leaving_in : String = user!!.time.toString()
-            val parkerTextView = dialog.findViewById<TextView>(R.id.txtDesc)
-            val leaveInTextView = dialog.findViewById<TextView>(R.id.leave_time)
-            parkerTextView.text = parkerTextView.text.toString().plus(parker_name)
-            leaveInTextView.text = leaveInTextView.text.toString().plus(leaving_in).plus(" minutes")
-            val btnClose: ImageView = dialog.findViewById(R.id.btn_close)
-            val orderButton : Button = dialog.findViewById(R.id.btn_order)
-            orderButton.setOnClickListener { orderClicked(orderButton) }
-
-            btnClose.setOnClickListener(View.OnClickListener() {
-                view-> dialog.dismiss()
-            })
-            dialog.show()
-
-            false //ARIK: forcing google to also activate default listener which opens directions
-        }
-
-
-
-        //mMap.getUiSettings().setMapToolbarEnabled(true)
     }
 }
