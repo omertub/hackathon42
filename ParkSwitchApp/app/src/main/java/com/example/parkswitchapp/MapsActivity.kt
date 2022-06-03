@@ -130,13 +130,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     parked_users.add(UsersWithLocations(userInfo))
                 }
                 //ADD FALSE PEOPLE:
-                parked_users.add(UsersWithLocations(UserInfo(1,"Avi Cohen",0,"34.85193881644974/32.07607580161331",Date(Date().time+3*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(2,"Omer Tuburg",0,"34.853908/32.077594",Date(Date().time+6*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(4,"Matan Eshel",0,"34.859029/32.099492",Date(Date().time+12*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(5,"Arik Friedman",0,"34.860145/32.100656",Date(Date().time+4*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(6,"Yehonatan Mizrahi",0,"34.857977/32.101219",Date(Date().time+15*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(7,"Eli",0,"34.857977/32.102219",Date(Date().time+8*60*1000))))
-                parked_users.add(UsersWithLocations(UserInfo(8,"Yoni Shitrit",0,"34.856977/32.101219",Date(Date().time+20*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(1111111111,"Avi Cohen",0,"34.85193881644974/32.07607580161331",Date(Date().time+3*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(2111111111,"Omer Tuburg",0,"34.853908/32.077594",Date(Date().time+6*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(41111111,"Matan Eshel",0,"34.859029/32.099492",Date(Date().time+12*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(51111111,"Arik Herzog",0,"34.860145/32.100656",Date(Date().time+4*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(61111111,"Yehonatan Mizrahi",0,"34.857977/32.101219",Date(Date().time+15*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(71111111,"Eli",0,"34.857977/32.102219",Date(Date().time+8*60*1000))))
+                parked_users.add(UsersWithLocations(UserInfo(81111111,"Yoni Shitrit",0,"34.856977/32.101219",Date(Date().time+20*60*1000))))
 
                 //parked_users.add(UsersWithLocations("8","Avia Cohen",LatLng(32.101519, 34.858977),3.0))
                 //parked_users.add(UsersWithLocations("9","Ruth Nimni",LatLng(32.102219, 34.847977),12.0))

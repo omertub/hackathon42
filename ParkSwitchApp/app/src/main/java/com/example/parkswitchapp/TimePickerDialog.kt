@@ -18,6 +18,7 @@ class TimePickerDialog(context: Activity) : Dialog(context){
 
     val appContext = context
     private lateinit var dialog: Dialog
+    private lateinit var dialog_completed: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,11 +79,24 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                     this.appContext.runOnUiThread {
                         if (UserData.id == it.get("id") as Int) {
                             // TODO: change to dialog
-                            Toast.makeText(
+                            //POPUP DIALOG:
+                            dialog_completed = Dialog(this.appContext)
+                            //add more info - distance from me? TTL?
+                            dialog_completed.setContentView(R.layout.replaced_layout)
+                            dialog_completed.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+
+                            val btnClose: ImageView = dialog_completed.findViewById(R.id.btn_close4)
+
+                            btnClose.setOnClickListener(View.OnClickListener() {
+                                    view-> dialog_completed.dismiss()
+                            })
+                            dialog_completed.show()
+
+                            /*Toast.makeText(
                                 this.appContext,
                                 "Parking completed. 10 tokens added successfully!",
                                 Toast.LENGTH_LONG
-                            ).show()
+                            ).show()*/
                             APIUtil.clean("parkingCompleted")
                         }
                     }
