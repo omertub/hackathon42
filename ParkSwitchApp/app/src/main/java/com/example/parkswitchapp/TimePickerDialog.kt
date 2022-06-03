@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parkswitchapp.utils.APIUtil
 import com.example.parkswitchapp.utils.UserData
+import com.example.parkswitchapp.utils.UserData.Companion.update_tokens
 import org.json.JSONObject
 import java.util.*
 
@@ -78,7 +79,6 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                 APIUtil.on("parkingCompleted") {
                     this.appContext.runOnUiThread {
                         if (UserData.id == it.get("id") as Int) {
-                            // TODO: change to dialog
                             //POPUP DIALOG:
                             dialog_completed = Dialog(this.appContext)
                             //add more info - distance from me? TTL?
@@ -100,6 +100,14 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                             APIUtil.clean("parkingCompleted")
                         }
                     }
+                }
+
+                APIUtil.getRequest("user?userId=${UserData.id}") {
+                        val status = it.get("status") as String
+                        if (status == "OK") {
+                            val user = it.get("user") as JSONObject
+                            UserData.init_user_data(user)
+                        }
                 }
 
                 dismiss()

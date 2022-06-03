@@ -19,5 +19,9 @@ class UserData {
             username = user.get("username") as String
             tokens = user.get("tokens") as Int
         }
+
+        fun update_tokens(tokens:Int) {
+            this.tokens = tokens
+        }
     }
 }

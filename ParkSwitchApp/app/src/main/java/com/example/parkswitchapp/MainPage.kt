@@ -67,6 +67,24 @@ class MainPage : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        APIUtil.getRequest("user?userId=${UserData.id}") {
+            runOnUiThread {
+                val status = it.get("status") as String
+                if (status != "OK") {
+                    Toast.makeText(this, "Error! $status", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    val user = it.get("user") as JSONObject
+                    UserData.init_user_data(user)
+                    findViewById<TextView>(R.id.statusView).text = UserData.status
+                    findViewById<TextView>(R.id.tokensView).text = UserData.tokens.toString()
+                }
+
+            }
+        }
+    }
 
     //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 //        val inflater : MenuInflater = getMenuInflater()
