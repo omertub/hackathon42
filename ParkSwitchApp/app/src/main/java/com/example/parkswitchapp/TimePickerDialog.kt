@@ -30,6 +30,8 @@ class TimePickerDialog(context: Activity) : Dialog(context){
         picker.wrapSelectorWheel = false
 
         findViewById<Button>(R.id.ButtonConfirm).setOnClickListener {
+            UserData.status = "Leaving"
+
             val date = Date()
             val expirationTime = date.time + picker.value * 60 * 1000
 
@@ -64,6 +66,9 @@ class TimePickerDialog(context: Activity) : Dialog(context){
                             //
                             //Toast.makeText(this.appContext, "Parking committed by $username", Toast.LENGTH_LONG).show()
                             APIUtil.clean("parkingCommitted")
+
+                            UserData.status = "Idle"
+
                         }
                     }
                 }

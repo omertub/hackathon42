@@ -37,12 +37,76 @@
 
     </FrameLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameView"
+        android:text="Hi Arik"
+        android:textSize="24dp"
+        android:layout_margin="5dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layoutDirection="ltr"
+        android:layout_margin="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"  />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statusView"
+            android:text="Idle"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"  />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layoutDirection="ltr"
+        android:layout_margin="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tokens: "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"  />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tokensView"
+            android:text="100"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"  />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/ButtonFindParking"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:insetTop="120dp"
+        android:insetTop="40dp"
         android:padding="15dp"
         android:text="Find Parking"
         android:textSize="20sp"

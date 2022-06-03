@@ -51,7 +51,20 @@ class MainPage : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
-        findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener { TimePickerDialog(this).show()}
+        findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener {
+            TimePickerDialog(this).show()
+            findViewById<TextView>(R.id.statusView).text = UserData.status
+        }
+
+        if (UserData.location == null) {
+            UserData.status = "Idle"
+        } else {
+            UserData.status = "Parking"
+        }
+        findViewById<TextView>(R.id.statusView).text = UserData.status
+        findViewById<TextView>(R.id.tokensView).text = UserData.tokens.toString()
+        findViewById<TextView>(R.id.nameView).text = "Welcome Back ${UserData.username}"
+
     }
 
 
@@ -107,6 +120,8 @@ class MainPage : AppCompatActivity() {
                 }
             }
         }
+        UserData.status = "Parking"
+        findViewById<TextView>(R.id.statusView).text = UserData.status
     }
 
 

@@ -12,6 +12,7 @@ class UserData {
         var tokens: Int? = null
         var location: String? = null
         var parkerId: Int? = null
+        var status: String? = null
 
         fun init_user_data(user: JSONObject) {
             id = user.get("id") as Int
