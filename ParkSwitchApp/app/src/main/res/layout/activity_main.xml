@@ -67,15 +67,4 @@
         android:textSize="20dp"
         android:textStyle="normal" />
 
-    <Button
-        android:id="@+id/ButtonSkip"
-        style="@style/SIGNUP_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#AFA4A4"
-        android:shadowColor="@color/white"
-        android:text="SKIP LOGIN"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:textStyle="normal" />
 </LinearLayout>

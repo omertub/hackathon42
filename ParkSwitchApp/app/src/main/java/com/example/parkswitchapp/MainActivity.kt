@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<Button>(R.id.ButtonLogin).setOnClickListener { view -> loginClicked(view) }
         findViewById<Button>(R.id.ButtonSignup).setOnClickListener { view -> signupClicked(view) }
-        findViewById<Button>(R.id.ButtonSkip).setOnClickListener { view -> startActivity(Intent(this, MainPage::class.java)) }
+        //findViewById<Button>(R.id.ButtonSkip).setOnClickListener { view -> startActivity(Intent(this, MainPage::class.java)) }
 
     }
 
