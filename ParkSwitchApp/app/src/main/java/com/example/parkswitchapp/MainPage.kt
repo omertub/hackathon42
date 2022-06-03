@@ -54,6 +54,48 @@ class MainPage : AppCompatActivity() {
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener { TimePickerDialog(this).show()}
     }
 
+
+    //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater : MenuInflater = getMenuInflater()
+//        inflater.inflate(R.menu.options, menu);
+//        return true
+//    }
+    fun showPopup(v : View){
+        val user_name = "avi" //NEED TO GET NAME BACK FROM SERVER AFTER LOGIN AND PASS IT HERE WITH PUTEXRA
+        val tokens = "50" //SAME
+        val popup = PopupMenu(this, v)
+        val inflater: MenuInflater = popup.menuInflater
+        inflater.inflate(R.menu.options, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.my_profile-> {
+                    //add here profile page reference
+                    dialog= Dialog(this)
+                    dialog.setContentView(R.layout.my_info_layout)
+                    dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
+                    val MyName = dialog.findViewById<TextView>(R.id.my_name_text)
+                    val myTokens = dialog.findViewById<TextView>(R.id.tokens_text)
+                    MyName.text = MyName.text.toString().plus(user_name)
+                    myTokens.text = myTokens.text.toString().plus(tokens)
+
+                    val btnClose: ImageView = dialog.findViewById(R.id.btn_close2)
+                    btnClose.setOnClickListener(View.OnClickListener() {
+                            view-> dialog.dismiss()
+                    })
+                    dialog.show()
+
+                }
+                R.id.log_out-> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            true
+        }
+        popup.show()
+    }
+
+
     private fun parkedClicked(view : View) {
         Toast.makeText(this, "location saved", Toast.LENGTH_SHORT).show()
         // Get current location and save to server
