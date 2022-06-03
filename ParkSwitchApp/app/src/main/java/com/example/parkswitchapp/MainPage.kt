@@ -45,7 +45,10 @@ class MainPage : AppCompatActivity() {
             val intent = Intent(this, SearcherActivity::class.java)
             startActivity(intent)
         }
-
+        findViewById<Button>(R.id.ButtonDiscounts).setOnClickListener {
+            val intent = Intent(this, DiscountsActivity::class.java)
+            startActivity(intent)
+        }
         findViewById<Button>(R.id.ButtonParked).setOnClickListener { view -> parkedClicked(view) }
         findViewById<Button>(R.id.ButtonLeaveParking).setOnClickListener { TimePickerDialog(this).show()}
     }

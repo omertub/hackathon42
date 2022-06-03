@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BackgroundStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".SearcherActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        app:layout_insetEdge="none">
+
+
+        <ImageView
+            android:id="@+id/image_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/gray_line" />
+
+        <ImageView
+            android:id="@+id/menu_popup"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="right"
+            android:layout_margin="10sp"
+            android:onClick="showPopup"
+            android:padding="5sp"
+            app:srcCompat="@drawable/ic_baseline_menu_24" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/match_found_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/roboto_black"
+        android:text="Discounts"
+        android:textColor="@color/colorBlacky"
+        android:textSize="40sp" />
+
+    <ImageView
+        android:id="@+id/greceries_image"
+        android:layout_width="256dp"
+        android:layout_height="117dp"
+        android:layout_margin="40dp"
+        app:srcCompat="@drawable/groceries" />
+
+    <ImageView
+        android:id="@+id/entertainment_image"
+        android:layout_width="256dp"
+        android:layout_height="117dp"
+        android:layout_margin="40dp"
+        app:srcCompat="@drawable/entertainment" />
+
+    <ImageView
+        android:id="@+id/bills_image"
+        android:layout_width="256dp"
+        android:layout_height="117dp"
+        android:layout_margin="40dp"
+        app:srcCompat="@drawable/bills" />
+
+
+</LinearLayout>
