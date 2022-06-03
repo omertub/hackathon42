@@ -22,5 +22,5 @@ export class User {
   parkerId: number;
 
   @Column({ default: null })
-  expirationTime: string;
+  expirationTime: number;
 }

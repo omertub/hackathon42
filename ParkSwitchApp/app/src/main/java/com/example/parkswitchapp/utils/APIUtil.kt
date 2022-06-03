@@ -50,5 +50,9 @@ class APIUtil {
             }
         }
 
+        fun clean(eventName: String) {
+            webSocket.off(eventName)
+        }
+
     }
 }

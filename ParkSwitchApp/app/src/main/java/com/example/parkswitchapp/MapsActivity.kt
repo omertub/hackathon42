@@ -34,14 +34,18 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 import java.lang.Thread.sleep
+import java.util.*
 import java.util.jar.Manifest
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.concurrent.thread
 
 class UsersWithLocations (userInfo: UserInfo) {
     val username = userInfo.username
     val id = userInfo.id
     val location = LocationUtil.splitLocation(userInfo.location!!)
-    val time = 5 // TODO
+    val time = (userInfo.expirationTime.time - Date().time) / 1000 / 60
+
 }
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {

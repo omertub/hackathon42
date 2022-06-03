@@ -1,12 +1,14 @@
 package com.example.parkswitchapp.utils
 import com.google.android.gms.maps.model.LatLng
 import org.json.JSONObject
+import java.util.*
 
 class UserInfo(
     val id: Int,
     val username: String,
     val tokens: Int,
-    val location: String?,
+    val location: String,
+    val expirationTime: Date,
 ) {
 
     companion object {
@@ -16,8 +18,9 @@ class UserInfo(
             val username = user.get("username") as String
             val tokens = user.get("tokens") as Int
             val location = user.get("location") as String
+            val expirationTime = Date(user.get("expirationTime") as Long)
 
-            return UserInfo(userId, username,  tokens, location)
+            return UserInfo(userId, username,  tokens, location, expirationTime)
         }
     }
 }

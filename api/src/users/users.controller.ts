@@ -80,6 +80,7 @@ export class UserController {
 
     @Post('setExpirationTime')
     async setExpirationTime(@Body() setExpirationTime: any) {
+        console.log("🚀 ~ file: users.controller.ts ~ line 83 ~ UserController ~ setExpirationTime ~ setExpirationTime", setExpirationTime)
         const user = await this.userService.setExpirationTime(setExpirationTime);
         return {
             status: RESPONSE_STATUS.OK   
@@ -99,7 +100,9 @@ export class UserController {
     async commitParking(@Body() commitParking: any) {
         const { ownerUser, parkerUser } = await this.userService.commitParking(commitParking);
 
-        this.eventsGateway.server.emit('parkingCommited', {
+        console.log("🚀 ~ file: users.controller.ts ~ line 107 ~ UserController ~ commitParking ~ parkingCommitted", ownerUser.id,)
+
+        this.eventsGateway.server.emit('parkingCommitted', {
             id: ownerUser.id,
             parkerUser: parkerUser
         });
