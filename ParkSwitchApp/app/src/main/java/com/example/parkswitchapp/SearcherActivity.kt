@@ -49,8 +49,8 @@ class SearcherActivity : AppCompatActivity() {
                     dialog.getWindow()!!.setBackgroundDrawableResource(R.drawable.bg_window)
                     val MyName = dialog.findViewById<TextView>(R.id.my_name_text)
                     val myTokens = dialog.findViewById<TextView>(R.id.tokens_text)
-                    MyName.text = MyName.text.toString().plus(user_name)
-                    myTokens.text = myTokens.text.toString().plus(tokens)
+                    MyName.text = MyName.text.toString().plus(UserData.username)
+                    myTokens.text = myTokens.text.toString().plus(UserData.tokens)
 
                     val btnClose: ImageView = dialog.findViewById(R.id.btn_close2)
                     btnClose.setOnClickListener(View.OnClickListener() {
